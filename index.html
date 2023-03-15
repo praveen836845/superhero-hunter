@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="/node_modules/crypto-js/crypto-js.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[url('https://wallpaperaccess.com/full/1225736.jpg')] bg-cover bg-no-repeat">
+  <div class="p-2">
+    <div class="m-3">
+      <div class="flex">
+        <button
+          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-white bg-red-700 rounded-l-lg hover:bg-red-800 focus:outline-none"
+          type="button"> <a href="/favourite.html">Favourite</a></button>
+        <div class="relative w-full">
+          <input type="search" id="query"
+            class="focus:outline-none block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300"
+            placeholder="Search any character..." required>
+          <button type="submit" id="search"
+            class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-slate-900 rounded-r-[7px] focus:outline-none h-[42px]">
+            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="sr-only">Search</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 gap-8 p-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 transition-all transform ease-in-out float-none" id="results"></div>
+</div>
+  </div>
+</body>
+
+</html>
+<!-- <script type="module" src="index.js"></script> -->
+<script type="module">
+  let public_api = "df2548987c893122ae5f6233ce06cc76";
+  let private_api = "ab30ca613935ea396aa2a92d9d04db05211f5432";
+  let Favourite = JSON.parse(localStorage.getItem("fav")) || [];
+  let Heros = JSON.parse(localStorage.getItem("heros")) || [];
+  let results = document.getElementById("results");
+  // var md5 = CryptoJS.MD5;
+
+  let search = document
+    .getElementById("search")
+    .addEventListener("click", function () {
+      sea();
+    });
+
+  // var ts = new Date().getTime();
+  var ts = "1640717903956";
+  // console.log(ts);
+
+  // var hashed = md5(ts + public_api + private_api).toString();
+  var hashed = "79f2927f4d78496679d921b2473e0dbf";
+  // console.log(hashed);
+
+  let sea = async () => {
+    let query = document.getElementById("query").value;
+    let res = await fetch(
+      `https://gateway.marvel.com/v1/public/characters?nameStartsWith=${query}&ts=1640717903935&apikey=fbaa46b0c09a2703c7e247764cda66f6&hash=cd07a618bf10905245ca5217773722a2`
+    );
+    let data = await res.json();
+
+    localStorage.setItem("heros", JSON.stringify(data.data.results));
+    append(data.data.results);
+  };
+
+  append(Heros);
+
+  function append(data) {
+    results.innerHTML = null;
+    data.map((el, i) => {
+      let box = document.createElement("div");
+      box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-xl bg-slate-900 overflow-hidden hover:scale-105 duration-500 transition-all ease-in-out');
+
+      // box.addEventListener("click", function () {
+      //   localStorage.setItem("details", JSON.stringify(el));
+      //   window.location.assign("superheropage.html");
+      // });
+
+      let name = document.createElement("h3");
+      name.innerHTML = el.name;
+      name.setAttribute('class','text-white text-center mt-3 text-md mx-2 font-bold')
+
+      let image = document.createElement("img");
+      image.setAttribute('class','p-3 rounded-[100%] h-40 w-40 block mx-auto')
+      image.src = el.thumbnail.path + "." + el.thumbnail.extension;
+
+      image.addEventListener("click", function () {
+        localStorage.setItem("details", JSON.stringify(el));
+        window.location.assign("superheropage.html");
+      });
+
+      let fav = document.createElement("button");
+      fav.innerText = "Favourite";
+      fav.setAttribute('class','block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded')
+
+      fav.addEventListener("click", function () {
+        if (Favourite.length > 0) {
+          for (let i = 0; i < Favourite.length; i++) {
+            if (el.id === Favourite[i].id) {
+              return alert("Already added to fav list");
+            }
+          }
+        }
+        Favourite.push(el);
+        fav.innerText = "Added!"
+        fav.classList.add('bg-green-500','hover:bg-green-600')
+        localStorage.setItem("fav", JSON.stringify(Favourite));
+      });
+
+      if (Favourite.length > 0) {
+        for (let i = 0; i < Favourite.length; i++) {
+          if (el.id === Favourite[i].id) {
+            fav.innerText= "Added!"
+            fav.classList.remove('bg-red-600','hover:bg-red-700')
+            fav.classList.add('bg-green-500','hover:bg-green-600')
+          }
+        }
+      }
+
+      box.append(name, image, fav);
+
+      results.append(box);
+    });
+  }
+</script>

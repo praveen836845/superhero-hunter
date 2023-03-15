@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Superhero</title>
+    <style>
+      #results {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body class="bg-cover bg-no-repeat bg-[url('https://cdn.wallpaperjam.com/content/images/0f/b5/0fb536c43e760c0053f040dcefeb17a485c9cde2.jpg')] p-5 text-white">
+    <h1 class="border text-2xl font-extrabold w-fit p-2 border-white font-mono">Deatils of SuperHero</h1>
+    <div id="results" class="p-3 w-full">
+      <div id="images" class="block w-full items-center text-center mx-auto">
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  let details = JSON.parse(localStorage.getItem("details"));
+  let imagess = document.getElementById('images')
+  let results = document.getElementById("results");
+
+  let id = document.createElement("h4");
+  // let span = document.createElement('span');
+  // span.innerText
+  id.innerHTML = `<span class="font-bold">-> ID</span> - ${details.id}`;
+  id.setAttribute('class','')
+
+  let name = document.createElement("h4");
+  name.innerHTML = `<span class="font-bold">-> Name</span> - ${details.name}`;
+  name.setAttribute('class','')
+
+  let description = document.createElement("h5");
+  description.innerHTML = `<span class="font-bold">-> Description</span> - ${details.description}`;
+
+
+  let divs = document.createElement('div')
+  divs.setAttribute('class','item-center justify-center')
+  let image = document.createElement("img");
+  image.src = details.thumbnail.path + "." + details.thumbnail.extension;
+  image.setAttribute('class','block mx-auto h-60 hover:scale-105 transform duration-500 shadow-lg shadow-red-600')
+
+  let events = document.createElement("h4");
+  events.innerHTML = `<span class="font-bold">-> Events</span> - ${details.events.available}`;
+
+  let stories = document.createElement("h4");
+  stories.innterHTML = `<span class="font-bold">-> Events</span> - ${details.stories.available}`;
+
+  results.append(id, name, description, divs, events, stories);
+  imagess.append(image)
+</script>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+  </head>
+  <body class="bg-[url('https://wallpapercave.com/wp/wp4308762.jpg')] bg-cover bg-no-repeat">
+    <div class="grid grid-cols-1 gap-8 p-5 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 transition-all transform ease-in-out float-none" id="results"></div>
+  </body>
+</html>
+<script>
+  let Favourite = JSON.parse(localStorage.getItem("fav")) || [];
+  console.log(Favourite);
+
+  let results = document.getElementById("results");
+
+  append(Favourite);
+  function append(Favourite) {
+    results.innerHTML = null;
+
+    Favourite.map((el, i) => {
+      let box = document.createElement("div");
+      box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-md bg-slate-900 overflow-hidden hover:scale-105 text-white duration-500 transition-all ease-in-out');
+
+      let name = document.createElement("h3");
+      name.innerHTML = el.name;
+      name.setAttribute('class','text-center mt-3 text-md mx-2 font-bold')
+
+      let image = document.createElement("img");
+      image.setAttribute('class','p-3 rounded-[100%] h-40 w-40 block mx-auto')
+      image.src = el.thumbnail.path + "." + el.thumbnail.extension;
+
+      let deletes = document.createElement("button");
+      deletes.innerText = "Delete";
+      deletes.setAttribute('class','block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded')
+
+      deletes.addEventListener("click", function () {
+        deleteFav(el.id);
+      });
+
+      box.append(name, image, deletes);
+      results.append(box);
+    });
+  }
+
+  function deleteFav(id) {
+    console.log(id);
+
+    let updated = Favourite.filter((el, i) => {
+      return id !== el.id;
+    });
+
+    Favourite = updated;
+    localStorage.setItem("fav", JSON.stringify(updated));
+    append(updated);
+  }
+</script>
