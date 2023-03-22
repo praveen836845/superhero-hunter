@@ -21,33 +21,39 @@
   </body>
 </html>
 <script>
-  let details = JSON.parse(localStorage.getItem("details"));
-  let imagess = document.getElementById('images')
-  let results = document.getElementById("results");
+ // Retrieve 'details' data from localStorage
+let details = JSON.parse(localStorage.getItem("details"));
 
-  let id = document.createElement("h4");
-  // let span = document.createElement('span');
-  // span.innerText
-  id.innerHTML = `<span class="font-bold">-> ID</span> - ${details.id}`;
-  id.setAttribute('class','')
+// Get references to HTML elements
+let imagess = document.getElementById('images');
+let results = document.getElementById("results");
 
-  let name = document.createElement("h4");
-  name.innerHTML = `<span class="font-bold">-> Name</span> - ${details.name}`;
-  name.setAttribute('class','')
+// Create and set attributes for 'id' element
+let id = document.createElement("h4");
+id.innerHTML = `<span class="font-bold">-> ID</span> - ${details.id}`;
+id.setAttribute('class','');
 
-  let description = document.createElement("h5");
-  description.innerHTML = `<span class="font-bold">-> Description</span> - ${details.description}`;
+// Create and set attributes for 'name' element
+let name = document.createElement("h4");
+name.innerHTML = `<span class="font-bold">-> Name</span> - ${details.name}`;
+name.setAttribute('class','');
 
+// Create and set attributes for 'description' element
+let description = document.createElement("h5");
+description.innerHTML = `<span class="font-bold">-> Description</span> - ${details.description}`;
 
-  let divs = document.createElement('div')
-  divs.setAttribute('class','item-center justify-center')
-  let image = document.createElement("img");
-  image.src = details.thumbnail.path + "." + details.thumbnail.extension;
-  image.setAttribute('class','block mx-auto h-60 hover:scale-105 transform duration-500 shadow-lg shadow-red-600')
+// Create and set attributes for 'divs' and 'image' elements
+let divs = document.createElement('div');
+divs.setAttribute('class','item-center justify-center');
+let image = document.createElement("img");
+image.src = details.thumbnail.path + "." + details.thumbnail.extension;
+image.setAttribute('class','block mx-auto h-60 hover:scale-105 transform duration-500 shadow-lg shadow-red-600');
 
-  let events = document.createElement("h4");
-  events.innerHTML = `<span class="font-bold">-> Events</span> - ${details.events.available}`;
+// Create and set attributes for 'events' element
+let events = document.createElement("h4");
+events.innerHTML = `<span class="font-bold">-> Events</span> - ${details.events.available}`;
 
+// Create and set attributes for 'stories' element
   let stories = document.createElement("h4");
   stories.innterHTML = `<span class="font-bold">-> Events</span> - ${details.stories.available}`;
 

@@ -75,61 +75,85 @@
 
   append(Heros);
 
-  function append(data) {
+  
+// This function appends data to the HTML results element
+function append(data) {
+    // Set the innerHTML of the results element to null
+    // This ensures that the results element is empty before appending new data
     results.innerHTML = null;
+
+    // Map through the data array and create a box for each element
     data.map((el, i) => {
-      let box = document.createElement("div");
-      box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-xl bg-slate-900 overflow-hidden hover:scale-105 duration-500 transition-all ease-in-out');
+        let box = document.createElement("div");
+        // Set attributes for the box element
+        box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-xl bg-slate-900 overflow-hidden hover:scale-105 duration-500 transition-all ease-in-out');
+        
+        // Create a name element for the superhero and set its text content to the superhero's name
+        let name = document.createElement("h3");
+        name.innerHTML = el.name;
+        // Set attributes for the name element
+        name.setAttribute('class','text-white text-center mt-3 text-md mx-2 font-bold')
 
-      // box.addEventListener("click", function () {
-      //   localStorage.setItem("details", JSON.stringify(el));
-      //   window.location.assign("superheropage.html");
-      // });
+        // Create an image element for the superhero and set its source to the superhero's thumbnail path and extension
+        let image = document.createElement("img");
+        image.setAttribute('class','p-3 rounded-[100%] h-40 w-40 block mx-auto')
+        image.src = el.thumbnail.path + "." + el.thumbnail.extension;
 
-      let name = document.createElement("h3");
-      name.innerHTML = el.name;
-      name.setAttribute('class','text-white text-center mt-3 text-md mx-2 font-bold')
+      // Adding an event listener to the "image" element that was created earlier
+image.addEventListener("click", function () {
+  // Using the "localStorage" API to store the superhero's details as a JSON string
+  localStorage.setItem("details", JSON.stringify(el));
+  
+  // Redirecting the browser to the "superheropage.html" page
+  window.location.assign("superheropage.html");
+});
 
-      let image = document.createElement("img");
-      image.setAttribute('class','p-3 rounded-[100%] h-40 w-40 block mx-auto')
-      image.src = el.thumbnail.path + "." + el.thumbnail.extension;
 
-      image.addEventListener("click", function () {
-        localStorage.setItem("details", JSON.stringify(el));
-        window.location.assign("superheropage.html");
-      });
+// Creating a "button" element for adding to favourites
+let fav = document.createElement("button");
+fav.innerText = "Favourite";
+fav.setAttribute('class','block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded')
 
-      let fav = document.createElement("button");
-      fav.innerText = "Favourite";
-      fav.setAttribute('class','block mx-auto bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded')
-
-      fav.addEventListener("click", function () {
-        if (Favourite.length > 0) {
-          for (let i = 0; i < Favourite.length; i++) {
-            if (el.id === Favourite[i].id) {
-              return alert("Already added to fav list");
-            }
-          }
-        }
-        Favourite.push(el);
-        fav.innerText = "Added!"
-        fav.classList.add('bg-green-500','hover:bg-green-600')
-        localStorage.setItem("fav", JSON.stringify(Favourite));
-      });
-
-      if (Favourite.length > 0) {
-        for (let i = 0; i < Favourite.length; i++) {
-          if (el.id === Favourite[i].id) {
-            fav.innerText= "Added!"
-            fav.classList.remove('bg-red-600','hover:bg-red-700')
-            fav.classList.add('bg-green-500','hover:bg-green-600')
-          }
-        }
+// Adding an event listener to the "fav" button
+fav.addEventListener("click", function () {
+  // Checking if there are any superheroes already in the favourites list
+  if (Favourite.length > 0) {
+    // Looping through the favourites list to check if the current superhero is already added
+    for (let i = 0; i < Favourite.length; i++) {
+      if (el.id === Favourite[i].id) {
+        // If the superhero is already in the favourites list, display an alert and exit the function
+        return alert("Already added to fav list");
       }
+    }
+  }
+  // If the superhero is not already in the favourites list, add them to the list
+  Favourite.push(el);
+  fav.innerText = "Added!"
+  fav.classList.add('bg-green-500','hover:bg-green-600')
+  
+  // Storing the updated favourites list in the browser's localStorage
+  localStorage.setItem("fav", JSON.stringify(Favourite));
+});
+     // Checking if the "Favourite" array already contains any superheroes
+if (Favourite.length > 0) {
+  // Looping through the "Favourite" array
+  for (let i = 0; i < Favourite.length; i++) {
+    // Checking if the current superhero in the "data" array (i.e., "el") has already been added to the "Favourite" array
+    if (el.id === Favourite[i].id) {
+      // If the superhero has already been added to the "Favourite" array, update the button's text and classes
+      fav.innerText= "Added!"
+      fav.classList.remove('bg-red-600','hover:bg-red-700')
+      fav.classList.add('bg-green-500','hover:bg-green-600')
+    }
+  }
+}
 
-      box.append(name, image, fav);
+// Adding the name, image, and "fav" button to the "box" element
+box.append(name, image, fav);
 
-      results.append(box);
+// Adding the "box" element to the "results" element
+results.append(box);
+
     });
   }
 </script>

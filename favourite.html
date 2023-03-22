@@ -12,18 +12,29 @@
   </body>
 </html>
 <script>
-  let Favourite = JSON.parse(localStorage.getItem("fav")) || [];
-  console.log(Favourite);
+  // Get "fav" from local storage and parse the JSON string to an array. If there is no data in local storage, set an empty array.
+let Favourite = JSON.parse(localStorage.getItem("fav")) || [];
 
-  let results = document.getElementById("results");
+// Log the "fav" array to the console.
+console.log(Favourite);
 
-  append(Favourite);
-  function append(Favourite) {
-    results.innerHTML = null;
+// Get the "results" element from the DOM.
+let results = document.getElementById("results");
 
-    Favourite.map((el, i) => {
-      let box = document.createElement("div");
-      box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-md bg-slate-900 overflow-hidden hover:scale-105 text-white duration-500 transition-all ease-in-out');
+// Call the "append" function and pass in the "fav" array.
+append(Favourite);
+
+// Define the "append" function, which takes in an array parameter named "Favourite".
+function append(Favourite) {
+
+  // Clear the innerHTML of the "results" element.
+  results.innerHTML = null;
+
+  // Use the map method to iterate over each element in the "fav" array and create a new DOM element for each one.
+  Favourite.map((el, i) => {
+    // Create a new div element and set its class, using tailwind CSS classes.
+    let box = document.createElement("div");
+    box.setAttribute('class', 'h-auto pb-2 group shadow-lg hover:shadow-xl shadow-black rounded-md bg-slate-900 overflow-hidden hover:scale-105 text-white duration-500 transition-all ease-in-out');
 
       let name = document.createElement("h3");
       name.innerHTML = el.name;
@@ -45,7 +56,7 @@
       results.append(box);
     });
   }
-
+//  For deleting the hero from the favourite page
   function deleteFav(id) {
     console.log(id);
 
